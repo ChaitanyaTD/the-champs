@@ -333,6 +333,7 @@ actor Champs {
             case null return #err("No args found for Invoice");
             case(?_args) _args;
         };
+        Debug.print(debug_show(args));
         let statusCheck = await getStatus(invoiceId);
         switch(statusCheck){
             case(#err(e)){
@@ -362,6 +363,7 @@ actor Champs {
         // if (Principal.isAnonymous(_user)) {
         //     throw Error.reject("User is not authenticated");
         // };
+        Debug.print(debug_show(numberoftokens));
         let tokencansiter_actor = actor (Principal.toText(tokencanisterid)) : actor {
             icrc1_transfer : (ICRC.TransferArg) -> async ICRC.Result;
             getTotalSupply : () -> async Nat;
@@ -473,7 +475,9 @@ actor Champs {
                 successUrl = successUrl;
                 cancelUrl = cancelUrl;
             };
-
+            Debug.print(debug_show(body));
+            Debug.print(debug_show(numberoftokens));
+            Debug.print(debug_show(quantity));
             let request_body_json : Text = "{ " # "\"qty\" : " # Nat.toText(body.qty) # ","  # " \"success_url\" : \" " # body.successUrl # "\"," # " \"failed_url\" : \"" # body.cancelUrl # "\"" # "  }";
             let request_body = Text.encodeUtf8(request_body_json);
 
